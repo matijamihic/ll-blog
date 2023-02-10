@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
@@ -29,16 +28,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-Route::resource('posts', PostController::class , [
-    'except' => ['edit', 'create']
-]);
-
 Route::get('/authors/{id}/posts', [AuthorController::class, 'posts']);
 Route::resource('authors', AuthorController::class, [
     'only' => ['index', 'show']
 ]);
 
-Route::resource('profile', ProfileController::class , [
+Route::get('/posts/tags', [PostController::class, 'tags']);
+Route::resource('posts', PostController::class, [
     'except' => ['edit', 'create']
 ]);
-

@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentTaggable\Taggable;
 
 class Post extends Model
 {
-    use HasFactory;
-
+    use HasFactory, Taggable;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +23,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $with = ['user'];
+    protected $with = ['user', 'tags'];
 
     /**
      * Get the user for the blog post.
