@@ -67,11 +67,12 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        if ($post->user->id !== Auth::id()) {
+            return response()->json(['message' => 'Not authorized'], 200)->header('Content-Type', 'application/json');
+        }
+
         $data = $request->toArray();
-
-
-        $post->tag($request->tags);
-        
+        $post->tag($request->tags);    
         $post->update($data);
 
         return response()->json(['message' => 'Post updated'], 200)->header('Content-Type', 'application/json');
@@ -85,6 +86,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if ($post->user->id !== Auth::id()) {
+            return response()->json(['message' => 'Not authorized'], 200)->header('Content-Type', 'application/json');
+        }
+
         $post->delete();
 
         return response()->json(['message' => 'Post deleted'], 200)->header('Content-Type', 'application/json');
