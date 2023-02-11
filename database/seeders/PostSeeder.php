@@ -14,6 +14,19 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Post::factory(10)->create();
+        $tags = ["Blue", "Red", "Green", "Yellow", "Magenta", "Black", "White", "Cyan", "Pink"];
+
+        $posts = \App\Models\Post::factory(10)->create();
+
+        foreach($posts as $post) {
+
+            $tag = $tags[array_rand($tags,1)];
+            $post->tag($tag);
+
+            $tag = $tags[array_rand($tags,1)];
+            $post->tag($tag);
+
+            $post->save();
+        }
     }
 }
