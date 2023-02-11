@@ -39,11 +39,13 @@ class PostController extends Controller
         $post = new Post($data);
         $post->user_id = Auth::id();
         $post->save();
+
         $post->tag($request->tags);
         $post->save();
+
         $post->load('user');
 
-        return new PostResource($post);
+        return response()->json(['message' => 'Post created'], 200)->header('Content-Type', 'application/json');
     }
 
     /**
@@ -67,10 +69,13 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->toArray();
+
+
         $post->tag($request->tags);
+        
         $post->update($data);
 
-        return new PostResource($post);
+        return response()->json(['message' => 'Post updated'], 200)->header('Content-Type', 'application/json');
     }
 
     /**
@@ -83,7 +88,7 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return response(null, Response::HTTP_NO_CONTENT);    
+        return response()->json(['message' => 'Post deleted'], 200)->header('Content-Type', 'application/json');
     }
 
     /**
@@ -98,6 +103,6 @@ class PostController extends Controller
 
         return response()->json([
             'data' => $tags
-        ]);    
+        ], 200);    
     }
 }
