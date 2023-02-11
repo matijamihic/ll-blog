@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show', 'tags']);
+        $this->middleware('auth')->except(['index', 'show', 'tags', 'withAllTags', 'withAnyTags']);
     }
     /**
      * Display a listing of the resource.
@@ -92,7 +91,7 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * List all tags
      *
      * @param  \App\Models\Blog  $blog
      * @return \Illuminate\Http\Response
@@ -103,6 +102,36 @@ class PostController extends Controller
 
         return response()->json([
             'data' => $tags
+        ], 200);    
+    }
+
+    /**
+     * Display a listing of the posts with that include any of suplied tags 
+     *
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+    public function withAnyTags($tags)
+    {
+        $post = Post::withAnyTags($tags)->paginate();
+
+        return response()->json([
+            'data' => $post
+        ], 200);    
+    }
+
+    /**
+     * Display a listing of the posts with that include all of suplied tags 
+     *
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+    public function withAllTags($tags)
+    {
+        $post = Post::withAllTags($tags)->paginate();
+
+        return response()->json([
+            'data' => $post
         ], 200);    
     }
 }

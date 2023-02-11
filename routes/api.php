@@ -33,6 +33,8 @@ Route::resource('authors', AuthorController::class, [
     'only' => ['index', 'show']
 ]);
 
+Route::get('/posts/tags/{tag}/any', [PostController::class, 'withAnyTags']);
+Route::get('/posts/tags/{tag}', [PostController::class, 'withAllTags']);
 Route::get('/posts/tags', [PostController::class, 'tags']);
 Route::resource('posts', PostController::class, [
     'except' => ['edit', 'create']
