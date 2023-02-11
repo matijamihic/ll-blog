@@ -19,13 +19,10 @@ class PostSeeder extends Seeder
         $posts = \App\Models\Post::factory(10)->create();
 
         foreach($posts as $post) {
-
-            $tag = $tags[array_rand($tags,1)];
-            $post->tag($tag);
-
-            $tag = $tags[array_rand($tags,1)];
-            $post->tag($tag);
-
+            for($i=0; $i<rand(1,3); $i++) {
+                $tag = $tags[array_rand($tags,1)];
+                $post->tag($tag);
+            }
             $post->save();
         }
     }
