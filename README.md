@@ -71,3 +71,13 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 php artisan serve
 php artisan db:seed --class=UserSeeder
 php artisan db:seed --class=PostSeeder
+
+
+TODO: 
+- add authorization trough validator class (for update/delete/profile requests)
+- improve response handling
+- add sail
+- improve on routes
+- add tests
+- 
+
