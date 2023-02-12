@@ -19,19 +19,24 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-Route::get('/authors/{id}/posts', [AuthorController::class, 'posts']);
-Route::apiResource('authors', AuthorController::class, [
-    'only' => ['index', 'show']
-]);
+Route::prefix('/authors')->group(function () {
+    Route::get('', [AuthorController::class, 'index']);
+    Route::get('/{id}', [AuthorController::class, 'show']);
+    Route::get('/{id}/posts', [AuthorController::class, 'posts']);
+});
 
-Route::get('/profile/posts', [ProfileController::class, 'posts']);
-Route::get('/profile/posts/{id}', [ProfileController::class, 'post']);
-Route::apiResource('profile', ProfileController::class, [
-    'only' => ['index', 'store']
-]);
+Route::prefix('/profile')->group(function () {
+    Route::get('/posts', [ProfileController::class, 'posts']);
+    Route::get('/posts/{id}', [ProfileController::class, 'post']);
+    Route::apiResource('', ProfileController::class, [
+        'only' => ['index', 'store']
+    ]);
+});
 
-Route::get('/posts/tags/{tag}/any', [PostController::class, 'withAnyTags']);
-Route::get('/posts/tags/{tag}', [PostController::class, 'withAllTags']);
-Route::get('/posts/tags', [PostController::class, 'tags']);
-Route::post('/posts/{id}/restore', [PostController::class, 'restore']);
+Route::prefix('/posts')->group(function () {
+    Route::get('/tags/{tag}/any', [PostController::class, 'withAnyTags']);
+    Route::get('/tags/{tag}', [PostController::class, 'withAllTags']);
+    Route::get('/tags', [PostController::class, 'tags']);
+    Route::post('/{id}/restore', [PostController::class, 'restore']);
+});
 Route::apiResource('posts', PostController::class);
