@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
+use App\Http\Requests\ProfileStoreRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\User;
@@ -33,7 +33,7 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfileStoreRequest $request)
     {
         $data = $request->toArray();
         $user = User::findOrFail(Auth::id());

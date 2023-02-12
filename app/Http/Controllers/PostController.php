@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostUpdateRequest;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -35,9 +36,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
-        $data = $request->toArray();
+        $data = $request->validated();
 
         $post = new Post($data);
         $post->user_id = Auth::id();
@@ -74,13 +75,14 @@ class PostController extends Controller
      * @param  \App\Models\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
-    {        
+    public function update(PostUpdateRequest $request, Post $post)
+    {
         if ($post->user->id != Auth::id()) {
             return response()->json(['message' => 'Not authorized'], 200)->header('Content-Type', 'application/json');
         }
 
-        $data = $request->toArray();
+        $data = $request->validated();
+
         if(!empty($request->tags)) {
             $post->tag($request->tags);    
         }
