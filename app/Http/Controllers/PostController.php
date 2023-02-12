@@ -103,7 +103,7 @@ class PostController extends Controller
      */
     public function tags()
     {
-        $tags = Post::allTags();
+        $tags = Post::popularTags();
 
         return response()->json([
             'data' => $tags
