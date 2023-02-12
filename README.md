@@ -26,5 +26,12 @@ TODO:
 - improve response handling
 - add sail?
 - improve on routes
+- add some routes (add one tag, remove one tag,..)
 - add tests
+- add slugs to posts/users and as a routing possibility
+- add post likes
+- add post comments
+- add newsletter
+- fire up event when new post is added - broadcast newsletter/profile notifications
+- add tags of interests to user -> expand event broadcast - individual notifictaions/emails
 
