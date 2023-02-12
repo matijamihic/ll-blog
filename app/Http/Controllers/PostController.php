@@ -59,8 +59,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post = Post::latest()
-            ->whereHas('user', function ($q) {
+        $post = Post::whereHas('user', function ($q) {
                 $q->where('is_public', 1);
             })
             ->findOrFail($post->id);
@@ -76,13 +75,16 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
-    {
-        if ($post->user->id !== Auth::id()) {
+    {        
+        if ($post->user->id != Auth::id()) {
             return response()->json(['message' => 'Not authorized'], 200)->header('Content-Type', 'application/json');
         }
 
         $data = $request->toArray();
-        $post->tag($request->tags);    
+        if(!empty($request->tags)) {
+            $post->tag($request->tags);    
+        }
+
         $post->update($data);
 
         return response()->json(['message' => 'Post updated'], 200)->header('Content-Type', 'application/json');
@@ -103,6 +105,25 @@ class PostController extends Controller
         $post->delete();
 
         return response()->json(['message' => 'Post deleted'], 200)->header('Content-Type', 'application/json');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id) {
+        $post = Post::whereHas('user', function ($q) {
+            $q->where('id', Auth::id());
+        })
+        ->withTrashed()
+        ->findOrFail($id);
+
+        $post->deleted_at = null;
+        $post->save();
+
+        return response()->json(['message' => 'Post restored'], 200)->header('Content-Type', 'application/json');
     }
 
     /**
