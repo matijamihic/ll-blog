@@ -19,9 +19,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
+Route::apiResource('profile', ProfileController::class);
+
 Route::get('/authors/{id}/posts', [AuthorController::class, 'posts']);
 Route::apiResource('authors', AuthorController::class, [
-    'only' => ['index', 'show']
+    'only' => ['index', 'show', 'update']
 ]);
 
 Route::get('/posts/tags/{tag}/any', [PostController::class, 'withAnyTags']);
