@@ -62,6 +62,17 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic($query)
+    {
+        $query->where('is_public', 1);
+    }
+
+    /**
      * Get the posts that belong to user
      */
     public function posts()

@@ -23,7 +23,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $users = User::has('posts')->get();
+        $users = User::has('posts')->public()->get();
 
         return PostResource::collection($users);
     }
@@ -36,7 +36,9 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        return new UserResource(User::findOrFail($id));    
+        $user = User::public()->findOrFail($id);
+
+        return new UserResource($user);    
     }
 
     /**
@@ -47,6 +49,7 @@ class AuthorController extends Controller
      */
     public function posts($id)
     {
+        User::public()->findOrFail($id);
         $posts = Post::where('user_id', $id)->orderBy('id', 'desc')->paginate();
 
         return PostResource::collection($posts); 

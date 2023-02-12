@@ -20,7 +20,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id', 'desc')->paginate();
+        $posts = Post::latest()
+            ->whereHas('user', function ($q) {
+                $q->where('is_public', 1);
+            })
+            ->paginate();
 
         return PostResource::collection($posts);
     }
@@ -55,6 +59,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post = Post::latest()
+            ->whereHas('user', function ($q) {
+                $q->where('is_public', 1);
+            })
+            ->findOrFail($post->id);
+
         return new PostResource($post);
     }
 
